@@ -14,13 +14,18 @@ export default function EmployeeDetails() {
 
   const { employeeID } = useParams();
 
-  const { data, loading, error } = useFetch(
+  const { data, loading, error, refetch } = useFetch(
     "https://playground-03-backend.vercel.app/api/read-employees"
   );
 
   const foundEmployee = data?.find((employee) => employee._id == employeeID);
 
   const handleEdit = async () => {
+    if (!editedData.name || !editedData.title || !editedData.department) {
+      setToastMessage("All fields are required");
+      setToast(true);
+      return;
+    }
     try {
       const response = await fetch(
         `https://playground-03-backend.vercel.app/api/update-employee/${employeeID}`,
@@ -34,6 +39,7 @@ export default function EmployeeDetails() {
       );
 
       if (response.ok) {
+        refetch();
         setToastMessage("Employee edited successfully");
         setToast(true);
         setTimeout(() => setToast(false), 3000);
@@ -42,6 +48,7 @@ export default function EmployeeDetails() {
           title: "",
           department: "",
         });
+        setShowEdit(false);
       } else {
         setToastMessage("Failed to edit the employee");
         setToast(true);
@@ -79,7 +86,6 @@ export default function EmployeeDetails() {
         </div>
       )}
       <main className="container my-5">
-        {" "}
         {loading && <p className="text-center">Loading...</p>}
         {error && <p className="text-center">Error</p>}
         {foundEmployee && (

@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import useFetch from "../useFetch";
 import { useState } from "react";
 
@@ -11,6 +11,8 @@ export default function Employee() {
   const [toastMessage, setToastMessage] = useState("");
 
   const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this employee?"))
+      return;
     try {
       const response = await fetch(
         `https://playground-03-backend.vercel.app/api/delete-employee/${id}`,
@@ -38,7 +40,7 @@ export default function Employee() {
   const renderedData =
     filter === "All"
       ? data
-      : data?.filter((enployee) => enployee.department === filter);
+      : data?.filter((employee) => employee.department === filter);
 
   return (
     <>
