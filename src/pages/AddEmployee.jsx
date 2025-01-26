@@ -1,6 +1,10 @@
-
-
 export default function AddEmployee() {
+  const [createdData, setCreatedData] = useState({
+    name: "",
+    title: "",
+    department: "",
+  });
+
   return (
     <>
       <main className="container my-5">

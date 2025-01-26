@@ -27,6 +27,7 @@ export default function Employee() {
       } else {
         setToastMessage("Failed to delete the employee");
         setToast(true);
+        setTimeout(() => setToast(false), 3000);
         throw new Error();
       }
     } catch (error) {
